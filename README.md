@@ -140,7 +140,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Contact
 
 For any questions or support, please contact:
-- Email: atharvapatil1210@gmail.com
+- Email: atharvabodade@gmail.com
 - GitHub: [atharvapatil1210](https://github.com/atharvapatil1210)
 
 ---
