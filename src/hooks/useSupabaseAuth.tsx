@@ -2,6 +2,7 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
+import { useToast } from "@/hooks/use-toast";
 
 export type Profile = {
   id: string;
@@ -26,17 +27,25 @@ export const SupabaseAuthProvider = ({ children }: { children: React.ReactNode }
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   // Helper to fetch profile
   const fetchProfile = async (uid: string) => {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", uid)
-      .single();
-    if (!error && data) {
-      setProfile(data);
-    } else {
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", uid)
+        .single();
+        
+      if (error) throw error;
+      if (data) {
+        setProfile(data);
+      } else {
+        setProfile(null);
+      }
+    } catch (error) {
+      console.error("Error fetching profile:", error);
       setProfile(null);
     }
   };
@@ -46,7 +55,9 @@ export const SupabaseAuthProvider = ({ children }: { children: React.ReactNode }
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
       if (session?.user) {
+        // Use setTimeout to avoid Supabase authentication deadlock
         setTimeout(() => fetchProfile(session.user.id), 0);
       } else {
         setProfile(null);
@@ -57,6 +68,7 @@ export const SupabaseAuthProvider = ({ children }: { children: React.ReactNode }
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
+      
       if (data.session?.user) {
         fetchProfile(data.session.user.id);
       } else {
@@ -71,10 +83,19 @@ export const SupabaseAuthProvider = ({ children }: { children: React.ReactNode }
 
   // Sign out and clear session
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setSession(null);
-    setUser(null);
-    setProfile(null);
+    try {
+      await supabase.auth.signOut();
+      setSession(null);
+      setUser(null);
+      setProfile(null);
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast({
+        title: "Error signing out",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

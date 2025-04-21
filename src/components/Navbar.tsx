@@ -1,12 +1,15 @@
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import ProfileButton from "./ProfileButton";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { profile, loading } = useSupabaseAuth();
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -41,12 +44,12 @@ const Navbar = () => {
               profile ? (
                 <ProfileButton />
               ) : (
-                <button
-                  className="bg-wedding-gold text-white px-4 py-2 rounded-md hover:opacity-90 transition-all"
-                  onClick={() => window.location.href = "/auth"}
+                <Button
+                  className="bg-wedding-gold text-white hover:bg-wedding-gold/90 transition-all"
+                  onClick={() => navigate("/auth")}
                 >
                   Login / Sign Up
-                </button>
+                </Button>
               )
             )}
           </div>
@@ -103,15 +106,15 @@ const Navbar = () => {
                 profile ? (
                   <ProfileButton />
                 ) : (
-                  <button
-                    className="bg-wedding-gold text-white px-4 py-2 rounded-md hover:opacity-90 transition-all w-full"
+                  <Button
+                    className="bg-wedding-gold text-white hover:bg-wedding-gold/90 transition-all w-full"
                     onClick={() => {
                       setIsMenuOpen(false);
-                      window.location.href = "/auth";
+                      navigate("/auth");
                     }}
                   >
                     Login / Sign Up
-                  </button>
+                  </Button>
                 )
               )}
             </div>
