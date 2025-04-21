@@ -2,10 +2,22 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = "https://hvpgkwgpbmojtancqado.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2cGdrd2dwYm1vanRhbmNxYWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4OTA3NTAsImV4cCI6MjA2MDQ2Njc1MH0.ndBa8XXJQjmHMud3r15hgJ1EwboGxCA8KaJF5bCoiTk";
+// Get environment variables with fallbacks
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://hvpgkwgpbmojtancqado.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2cGdrd2dwYm1vanRhbmNxYWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4OTA3NTAsImV4cCI6MjA2MDQ2Njc1MH0.ndBa8XXJQjmHMud3r15hgJ1EwboGxCA8KaJF5bCoiTk";
+
+// Log the configuration for debugging
+console.log("Supabase URL:", SUPABASE_URL);
+console.log("Supabase Key:", SUPABASE_PUBLISHABLE_KEY.substring(0, 10) + "...");
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+// Create the Supabase client with additional options
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+});

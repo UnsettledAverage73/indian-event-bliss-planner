@@ -12,6 +12,7 @@ import PackageBuilder from "./pages/PackageBuilder";
 import BookingSummary from "./pages/BookingSummary";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import AuthCallback from "./pages/AuthCallback";
 import { SupabaseAuthProvider } from "@/hooks/useSupabaseAuth";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/package-builder" element={<PackageBuilder />} />
             <Route path="/booking-summary" element={<BookingSummary />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

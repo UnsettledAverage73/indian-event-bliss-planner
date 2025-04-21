@@ -49,7 +49,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="#" className="text-gray-600 hover:text-wedding-gold transition-colors">
-                  About Us
+                  About Us``
                 </Link>
               </li>
             </ul>
@@ -60,13 +60,13 @@ const Footer = () => {
             <h4 className="font-playfair text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-2">
               <li className="text-gray-600">
-                123 Wedding Street, Celebration City
+                A09, SV Hostel, SSGMCE, Shegaon
               </li>
               <li className="text-gray-600">
-                contact@eventbliss.com
+                ssgm_308217@ssgmce.ac.in
               </li>
               <li className="text-gray-600">
-                +91 123 456 7890
+                +91 9637843011
               </li>
             </ul>
           </div>
@@ -95,6 +95,10 @@ const Footer = () => {
         
         <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
           <p>© {new Date().getFullYear()} EventBliss. All rights reserved.</p>
+        </div>
+
+        <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
+          <p>Developed by <a href="https://github.com/atharvapatil1210" target="_blank" className="text-wedding-gold hover:text-wedding-gold-dark transition-colors">Atharva❤️</a></p>
         </div>
       </div>
     </footer>
