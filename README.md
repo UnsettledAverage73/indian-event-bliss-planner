@@ -1,73 +1,148 @@
-# Welcome to your Lovable project
+# Indian Event Bliss Planner
 
-## Project info
+A modern web application for planning and managing Indian events, celebrations, and ceremonies.
 
-**URL**: https://lovable.dev/projects/78514a36-fe19-44bd-a1d9-ef0948d26f6f
+![Indian Event Bliss Planner](https://img.shields.io/badge/Indian%20Event%20Bliss%20Planner-v1.0.0-blue)
+![React](https://img.shields.io/badge/React-18.2.0-61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-3178C6)
+![Supabase](https://img.shields.io/badge/Supabase-Powered-3ECF8E)
 
-## How can I edit this code?
+## 🌟 Features
 
-There are several ways of editing your application.
+- **User Authentication**: Secure sign-up and login with email or Google
+- **Event Planning**: Create, manage, and track Indian events
+- **Guest Management**: Invite and manage guest lists
+- **Budget Tracking**: Monitor expenses and stay within budget
+- **Timeline Management**: Create detailed event timelines
+- **Vendor Directory**: Find and connect with local vendors
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
-**Use Lovable**
+## 🚀 Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/78514a36-fe19-44bd-a1d9-ef0948d26f6f) and start prompting.
+### Prerequisites
 
-Changes made via Lovable will be committed automatically to this repo.
+- Node.js (v16 or higher)
+- npm or yarn
+- Supabase account
 
-**Use your preferred IDE**
+### Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Clone the repository
+   ```bash
+   git clone https://github.com/atharvapatil1210/indian-event-bliss-planner.git
+   cd indian-event-bliss-planner
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. Install dependencies
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-Follow these steps:
+3. Set up environment variables
+   Create a `.env` file in the root directory with the following variables:
+   ```
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+4. Start the development server
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+5. Open your browser and navigate to `http://localhost:5173`
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🛠️ Tech Stack
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Authentication, Storage)
+- **Styling**: Tailwind CSS, Shadcn UI
+- **State Management**: React Context API
+- **Routing**: React Router
+- **Form Handling**: React Hook Form
+- **Notifications**: Toast notifications
+
+## 📁 Project Structure
+
+```
+indian-event-bliss-planner/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # Reusable UI components
+│   ├── hooks/           # Custom React hooks
+│   ├── integrations/    # Third-party integrations
+│   ├── lib/             # Utility functions and libraries
+│   ├── pages/           # Page components
+│   ├── styles/          # Global styles
+│   ├── App.tsx          # Main application component
+│   └── main.tsx         # Application entry point
+├── .env                 # Environment variables
+├── package.json         # Project dependencies
+└── vite.config.ts       # Vite configuration
 ```
 
-**Edit a file directly in GitHub**
+## 🔐 Authentication Flow
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The application uses Supabase Authentication with the following features:
 
-**Use GitHub Codespaces**
+- Email/Password authentication
+- Google OAuth integration
+- Secure session management
+- Protected routes
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🧪 Testing
 
-## What technologies are used for this project?
+```bash
+# Run tests
+npm run test
+# or
+yarn test
+```
 
-This project is built with:
+## 📦 Deployment
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The application can be deployed to various platforms:
 
-## How can I deploy this project?
+1. **Vercel**:
+   ```bash
+   npm run build
+   vercel
+   ```
 
-Simply open [Lovable](https://lovable.dev/projects/78514a36-fe19-44bd-a1d9-ef0948d26f6f) and click on Share -> Publish.
+2. **Netlify**:
+   ```bash
+   npm run build
+   netlify deploy
+   ```
 
-## Can I connect a custom domain to my Lovable project?
+## 🤝 Contributing
 
-Yes, you can!
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👥 Team
+
+- **Atharva Patil** - Lead Developer
+
+## 📞 Contact
+
+For any questions or support, please contact:
+- Email: atharvapatil1210@gmail.com
+- GitHub: [atharvapatil1210](https://github.com/atharvapatil1210)
+
+---
+
+Made with ❤️ for Indian event planners everywhere 
