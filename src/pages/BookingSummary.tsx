@@ -1,9 +1,11 @@
-
 import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { CreditCard, IndianRupee } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useToast } from '@/hooks/use-toast';
+import { PaymentButton } from '@/components/PaymentButton';
+import { createClient } from '@supabase/supabase-js';
 
 // UPI Options
 const upiOptions = [
@@ -12,9 +14,16 @@ const upiOptions = [
   { id: "paytm", name: "Paytm", icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/2560px-Paytm_Logo_%28standalone%29.svg.png" }
 ];
 
+// Initialize Supabase client
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
 const BookingSummary: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const eventType = searchParams.get("eventType") || "";
   const category = searchParams.get("category") || "";
@@ -33,6 +42,8 @@ const BookingSummary: React.FC = () => {
   const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [bookingId, setBookingId] = useState<string | null>(null);
   
   // Format date for display
   const formattedDate = eventDate 
@@ -119,6 +130,140 @@ const BookingSummary: React.FC = () => {
           navigate("/");
         }, 5000);
       }, 1500);
+    }
+  };
+  
+  // Create a booking record before payment
+  const createBookingRecord = async () => {
+    try {
+      const bookingData = {
+        event_type: eventType,
+        category,
+        guest_count: guestCount,
+        event_date: eventDate,
+        total_amount: total,
+        status: 'pending',
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone,
+        customer_address: address,
+        created_at: new Date().toISOString(),
+      };
+
+      const { data, error } = await supabase
+        .from('bookings')
+        .insert(bookingData)
+        .select()
+        .single();
+
+      if (error) throw error;
+      setBookingId(data.id);
+      return data.id;
+    } catch (error) {
+      console.error('Error creating booking:', error);
+      throw new Error('Failed to create booking record');
+    }
+  };
+
+  const handlePaymentSuccess = async (response: any) => {
+    try {
+      setIsProcessing(true);
+      
+      if (!bookingId) {
+        throw new Error('Booking ID not found');
+      }
+
+      // Update booking with payment details
+      const { error: updateError } = await supabase
+        .from('bookings')
+        .update({
+          payment_id: response.razorpay_payment_id,
+          order_id: response.razorpay_order_id,
+          status: 'confirmed',
+          payment_status: 'completed',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', bookingId);
+
+      if (updateError) throw updateError;
+
+      // Send confirmation email
+      const { error: emailError } = await supabase.functions.invoke('send-booking-confirmation', {
+        body: {
+          bookingId,
+          customerEmail: email,
+          customerName: name,
+          eventType,
+          eventDate,
+          totalAmount: total,
+        },
+      });
+
+      if (emailError) {
+        console.error('Error sending confirmation email:', emailError);
+        // Don't throw error here as the booking is already confirmed
+      }
+
+      toast({
+        title: "Booking Confirmed!",
+        description: "Your booking has been confirmed successfully. Check your email for details.",
+      });
+
+      navigate('/booking-success', { 
+        state: { 
+          bookingId,
+          paymentId: response.razorpay_payment_id 
+        } 
+      });
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      toast({
+        title: "Error",
+        description: "There was an error processing your payment. Please contact support.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handlePaymentError = (error: any) => {
+    console.error('Payment failed:', error);
+    
+    // Update booking status to failed if booking exists
+    if (bookingId) {
+      supabase
+        .from('bookings')
+        .update({
+          status: 'failed',
+          payment_status: 'failed',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', bookingId)
+        .then(({ error }) => {
+          if (error) console.error('Error updating booking status:', error);
+        });
+    }
+
+    toast({
+      title: "Payment Failed",
+      description: error.message || "There was an error processing your payment. Please try again.",
+      variant: "destructive",
+    });
+  };
+
+  const handlePaymentInit = async () => {
+    try {
+      setIsProcessing(true);
+      await createBookingRecord();
+    } catch (error) {
+      console.error('Error initializing payment:', error);
+      toast({
+        title: "Error",
+        description: "Failed to initialize payment. Please try again.",
+        variant: "destructive",
+      });
+      setIsProcessing(false);
     }
   };
   
@@ -406,18 +551,17 @@ const BookingSummary: React.FC = () => {
                         </label>
                       </div>
                       
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={`
-                          w-full py-3 rounded-md font-medium text-white text-center
-                          ${isSubmitting 
-                            ? 'bg-gray-400 cursor-not-allowed' 
-                            : 'bg-wedding-gold hover:opacity-90'}
-                        `}
-                      >
-                        {isSubmitting ? "Processing..." : "Confirm and Pay"}
-                      </button>
+                      <div className="mt-8">
+                        <PaymentButton
+                          amount={total}
+                          buttonText={isProcessing ? "Processing..." : "Confirm and Pay"}
+                          disabled={isProcessing}
+                          onSuccess={handlePaymentSuccess}
+                          onError={handlePaymentError}
+                          onInit={handlePaymentInit}
+                          className="w-full py-3 rounded-md font-medium text-white text-center bg-wedding-gold hover:opacity-90"
+                        />
+                      </div>
                     </div>
                   </form>
                 </div>

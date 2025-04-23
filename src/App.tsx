@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AuthCallback from "./pages/AuthCallback";
 import { SupabaseAuthProvider } from "@/hooks/useSupabaseAuth";
+import TestPayment from './pages/TestPayment';
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/booking-summary" element={<BookingSummary />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/test-payment" element={<TestPayment />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

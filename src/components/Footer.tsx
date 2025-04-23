@@ -1,8 +1,18 @@
-
 import { Facebook, Instagram, Twitter, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PaymentButton } from '@/components/PaymentButton';
 
 const Footer = () => {
+  const handlePaymentSuccess = (response: any) => {
+    console.log('Payment successful:', response);
+    // Handle successful payment (e.g., update booking status)
+  };
+
+  const handlePaymentError = (error: any) => {
+    console.error('Payment failed:', error);
+    // Handle payment error
+  };
+
   return (
     <footer className="bg-gradient-to-r from-wedding-softgray to-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -99,6 +109,15 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
           <p>Developed by <a href="https://github.com/atharvapatil1210" target="_blank" className="text-wedding-gold hover:text-wedding-gold-dark transition-colors">Atharva❤️</a></p>
+        </div>
+
+        <div className="mt-8 text-center">
+          <h2 className="font-playfair text-2xl font-bold mb-4">Book Event</h2>
+          <PaymentButton
+            amount={1000} // Amount in INR
+            onSuccess={handlePaymentSuccess}
+            onError={handlePaymentError}
+          />
         </div>
       </div>
     </footer>
