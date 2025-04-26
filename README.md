@@ -36,10 +36,7 @@ A modern web application for planning and managing Indian events, celebrations, 
 2. Install dependencies
    ```bash
    npm install
-   # or
-   yarn install
    ```
-
 3. Set up environment variables
    Create a `.env` file in the root directory with the following variables:
    ```
@@ -49,9 +46,7 @@ A modern web application for planning and managing Indian events, celebrations, 
 
 4. Start the development server
    ```bash
-npm run dev
-   # or
-   yarn dev
+   npm run dev
    ```
 
 5. Open your browser and navigate to `http://localhost:5173`
@@ -94,31 +89,6 @@ The application uses Supabase Authentication with the following features:
 - Secure session management
 - Protected routes
 
-## 🧪 Testing
-
-```bash
-# Run tests
-npm run test
-# or
-yarn test
-```
-
-## 📦 Deployment
-
-The application can be deployed to various platforms:
-
-1. **Vercel**:
-   ```bash
-   npm run build
-   vercel
-   ```
-
-2. **Netlify**:
-   ```bash
-   npm run build
-   netlify deploy
-   ```
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -141,7 +111,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For any questions or support, please contact:
 - Email: atharvabodade@gmail.com
-- GitHub: [atharvapatil1210](https://github.com/atharvapatil1210)
+- GitHub: [UnstteledAverage73](https://github.com/UnsettledAverage73)
 
 ## 💳 Payment Integration
 
