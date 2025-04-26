@@ -1,4 +1,4 @@
-f# Indian Event Bliss Planner
+# Indian Event Bliss Planner
 
 A modern web application for planning and managing Indian events, celebrations, and ceremonies.
 
