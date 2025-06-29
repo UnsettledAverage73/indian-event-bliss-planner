@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { Button } from "@/components/ui/button";
@@ -39,13 +40,11 @@ const ProfileButton = () => {
   return (
     <div className="flex items-center gap-3">
       <Avatar>
-        <AvatarImage src={profile.avatar_url ?? undefined} alt={profile.first_name ?? "Profile"} />
         <AvatarFallback className="bg-wedding-gold text-white">
-          {profile.first_name?.charAt(0) || <User size={16} />}
-          {profile.last_name?.charAt(0)}
+          {profile.full_name?.charAt(0) || <User size={16} />}
         </AvatarFallback>
       </Avatar>
-      <span className="font-medium hidden md:inline">{profile.first_name} {profile.last_name}</span>
+      <span className="font-medium hidden md:inline">{profile.full_name}</span>
       <Button
         size="icon"
         variant="ghost"

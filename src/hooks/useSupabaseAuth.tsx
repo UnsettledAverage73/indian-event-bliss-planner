@@ -1,3 +1,4 @@
+
 import { useEffect, useState, createContext, useContext } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
@@ -5,9 +6,11 @@ import { useToast } from "@/hooks/use-toast";
 
 export type Profile = {
   id: string;
-  first_name: string | null;
-  last_name: string | null;
-  avatar_url: string | null;
+  full_name: string | null;
+  email: string;
+  phone: string | null;
+  created_at: string;
+  updated_at: string;
 };
 
 type AuthContextType = {
