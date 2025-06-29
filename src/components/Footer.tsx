@@ -1,18 +1,7 @@
 import { Facebook, Instagram, Twitter, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import { PaymentButton } from '@/components/PaymentButton';
 
 const Footer = () => {
-  const handlePaymentSuccess = (response: any) => {
-    console.log('Payment successful:', response);
-    // Handle successful payment (e.g., update booking status)
-  };
-
-  const handlePaymentError = (error: any) => {
-    console.error('Payment failed:', error);
-    // Handle payment error
-  };
-
   return (
     <footer className="bg-gradient-to-r from-wedding-softgray to-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -59,7 +48,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="#" className="text-gray-600 hover:text-wedding-gold transition-colors">
-                  About Us``
+                  About Us
                 </Link>
               </li>
             </ul>
@@ -70,13 +59,13 @@ const Footer = () => {
             <h4 className="font-playfair text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-2">
               <li className="text-gray-600">
-                A09, SV Hostel, SSGMCE, Shegaon
+                123 Wedding Street, Celebration City
               </li>
               <li className="text-gray-600">
-                ssgm_308217@ssgmce.ac.in
+                contact@eventbliss.com
               </li>
               <li className="text-gray-600">
-                +91 9637843011
+                +91 123 456 7890
               </li>
             </ul>
           </div>
@@ -105,19 +94,6 @@ const Footer = () => {
         
         <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
           <p>© {new Date().getFullYear()} EventBliss. All rights reserved.</p>
-        </div>
-
-        <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
-          <p>Developed by <a href="https://github.com/atharvapatil1210" target="_blank" className="text-wedding-gold hover:text-wedding-gold-dark transition-colors">Atharva❤️</a></p>
-        </div>
-
-        <div className="mt-8 text-center">
-          <h2 className="font-playfair text-2xl font-bold mb-4">Book Event</h2>
-          <PaymentButton
-            amount={1000} // Amount in INR
-            onSuccess={handlePaymentSuccess}
-            onError={handlePaymentError}
-          />
         </div>
       </div>
     </footer>

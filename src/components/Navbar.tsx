@@ -1,15 +1,9 @@
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import ProfileButton from "./ProfileButton";
-import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
-import { Button } from "./ui/button";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { profile, loading } = useSupabaseAuth();
-  const navigate = useNavigate();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -21,6 +15,7 @@ const Navbar = () => {
             </span>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
             <Link to="/" className="text-gray-700 hover:text-wedding-gold transition-colors">
               Home
@@ -39,21 +34,14 @@ const Navbar = () => {
             </Link>
           </div>
 
+          {/* Login Button */}
           <div className="hidden md:block">
-            {!loading && (
-              profile ? (
-                <ProfileButton />
-              ) : (
-                <Button
-                  className="bg-wedding-gold text-white hover:bg-wedding-gold/90 transition-all"
-                  onClick={() => navigate("/auth")}
-                >
-                  Login / Sign Up
-                </Button>
-              )
-            )}
+            <button className="bg-wedding-gold text-white px-4 py-2 rounded-md hover:opacity-90 transition-all">
+              Login / Sign Up
+            </button>
           </div>
 
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -64,6 +52,7 @@ const Navbar = () => {
           </div>
         </div>
 
+        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 py-4 border-t animate-fade-in">
             <div className="flex flex-col space-y-4">
@@ -102,21 +91,9 @@ const Navbar = () => {
               >
                 Contact
               </Link>
-              {!loading && (
-                profile ? (
-                  <ProfileButton />
-                ) : (
-                  <Button
-                    className="bg-wedding-gold text-white hover:bg-wedding-gold/90 transition-all w-full"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      navigate("/auth");
-                    }}
-                  >
-                    Login / Sign Up
-                  </Button>
-                )
-              )}
+              <button className="bg-wedding-gold text-white px-4 py-2 rounded-md hover:opacity-90 transition-all w-full">
+                Login / Sign Up
+              </button>
             </div>
           </div>
         )}
