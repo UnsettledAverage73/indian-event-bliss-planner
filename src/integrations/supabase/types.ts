@@ -11,28 +11,112 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
-          avatar_url: string | null
           created_at: string
-          first_name: string | null
+          email: string
+          full_name: string | null
           id: string
-          last_name: string | null
+          phone: string | null
           updated_at: string
         }
         Insert: {
-          avatar_url?: string | null
           created_at?: string
-          first_name?: string | null
+          email: string
+          full_name?: string | null
           id: string
-          last_name?: string | null
+          phone?: string | null
           updated_at?: string
         }
         Update: {
-          avatar_url?: string | null
           created_at?: string
-          first_name?: string | null
+          email?: string
+          full_name?: string | null
           id?: string
-          last_name?: string | null
+          phone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vendors: {
+        Row: {
+          active: boolean | null
+          business_name: string
+          business_type: string
+          created_at: string
+          description: string | null
+          email: string | null
+          id: string
+          images: string[] | null
+          location: string | null
+          phone: string | null
+          price_range: string | null
+          rating: number | null
+          services: string[] | null
+          total_reviews: number | null
+          updated_at: string
+          user_id: string
+          verified: boolean | null
+          website: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          business_name: string
+          business_type: string
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          phone?: string | null
+          price_range?: string | null
+          rating?: number | null
+          services?: string[] | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean | null
+          website?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          business_name?: string
+          business_type?: string
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          id?: string
+          images?: string[] | null
+          location?: string | null
+          phone?: string | null
+          price_range?: string | null
+          rating?: number | null
+          services?: string[] | null
+          total_reviews?: number | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean | null
+          website?: string | null
         }
         Relationships: []
       }
@@ -41,10 +125,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["user_role"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "customer" | "vendor" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -159,6 +249,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["customer", "vendor", "admin"],
+    },
   },
 } as const
