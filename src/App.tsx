@@ -11,6 +11,8 @@ import VendorListing from "./pages/VendorListing";
 import PackageBuilder from "./pages/PackageBuilder";
 import BookingSummary from "./pages/BookingSummary";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/auth";
+import { SupabaseAuthProvider } from "./hooks/useSupabaseAuth";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <SupabaseAuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -28,10 +31,12 @@ const App = () => (
           <Route path="/vendor-listing" element={<VendorListing />} />
           <Route path="/package-builder" element={<PackageBuilder />} />
           <Route path="/booking-summary" element={<BookingSummary />} />
+          <Route path="/auth" element={<Auth />}></Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </SupabaseAuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

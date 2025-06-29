@@ -49,85 +49,27 @@ export const SupabaseAuthProvider = ({ children }: { children: React.ReactNode }
     }
   };
 
-  // Helper to create or update profile
-  const createOrUpdateProfile = async (user: User) => {
-    try {
-      // Check if profile exists
-      const { data: existingProfile, error: fetchError } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
-
-      if (fetchError && fetchError.code !== 'PGRST116') {
-        throw fetchError;
-      }
-
-      // If profile doesn't exist, create it
-      if (!existingProfile) {
-        // Extract name from user metadata if available (for OAuth providers)
-        const userMetadata = user.user_metadata;
-        const firstName = userMetadata?.full_name?.split(' ')[0] || userMetadata?.first_name || null;
-        const lastName = userMetadata?.full_name?.split(' ').slice(1).join(' ') || userMetadata?.last_name || null;
-        const avatarUrl = userMetadata?.avatar_url || null;
-
-        const { error: insertError } = await supabase
-          .from("profiles")
-          .insert({
-            id: user.id,
-            first_name: firstName,
-            last_name: lastName,
-            avatar_url: avatarUrl,
-          });
-
-        if (insertError) throw insertError;
-
-        // Fetch the newly created profile
-        await fetchProfile(user.id);
-      } else {
-        setProfile(existingProfile);
-      }
-    } catch (error) {
-      console.error("Error creating/updating profile:", error);
-    }
-  };
-
   useEffect(() => {
     // Setup listener first to avoid missing events
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        // Check if this is a new OAuth sign-in
-        const isOAuthSignIn = session.user.app_metadata.provider === 'google';
-        
-        if (isOAuthSignIn) {
-          // Create or update profile for OAuth users
-          await createOrUpdateProfile(session.user);
-        } else {
-          // Use setTimeout to avoid Supabase authentication deadlock
-          setTimeout(() => fetchProfile(session.user.id), 0);
-        }
+        // Use setTimeout to avoid Supabase authentication deadlock
+        setTimeout(() => fetchProfile(session.user.id), 0);
       } else {
         setProfile(null);
       }
     });
 
     // Check for existing session
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
       
       if (data.session?.user) {
-        // Check if this is an OAuth user
-        const isOAuthUser = data.session.user.app_metadata.provider === 'google';
-        
-        if (isOAuthUser) {
-          await createOrUpdateProfile(data.session.user);
-        } else {
-          fetchProfile(data.session.user.id);
-        }
+        fetchProfile(data.session.user.id);
       } else {
         setProfile(null);
       }
